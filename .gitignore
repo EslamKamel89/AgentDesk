@@ -1,0 +1,111 @@
+
+# ==========================================
+# AgentDesk - .gitignore
+# ==========================================
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# Packaging and build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+staticfiles/
+media/
+uploads/
+
+# MySQL and database dumps
+*.sql.gz
+*.sql.zip
+*.dump
+*.bak
+mysql_data/
+mysql-data/
+
+# ChromaDB and vector storage
+chroma/
+chroma_db/
+chroma_data/
+chroma.sqlite3
+.chroma/
+
+# AI and agent runtime artifacts
+agent_logs/
+conversation_dumps/
+llm_traces/
+*.jsonl
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# IDE and editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.pid
+
+# Local deployment artifacts
+.railway/
+
+udemy_course_resources
