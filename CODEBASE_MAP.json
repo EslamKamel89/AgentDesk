@@ -1,6 +1,6 @@
 {
     "core/__init__.py": {
-        "summary": "Marks core as the Django project Python package.",
+        "summary": "Registers PyMySQL as the MySQLdb driver for Django.",
         "namespace": "core"
     },
     "core/asgi.py": {
@@ -11,7 +11,7 @@
         ]
     },
     "core/settings.py": {
-        "summary": "Django project configuration: installed contrib apps, middleware, templates, SQLite database, authentication validators, timezone, and static files. Development-only DEBUG and hardcoded secret; generated header says Django 5.0.6 although requirements pin 6.1.3.",
+        "summary": "Django project configuration including the local MySQL connection, configured from environment variables with .env support.",
         "namespace": "core.settings"
     },
     "core/urls.py": {
@@ -41,7 +41,13 @@
             }
         ]
     },
+    ".env.example": {
+        "summary": "Example MySQL credentials and local service ports."
+    },
+    "compose.yaml": {
+        "summary": "MySQL 8.4 and phpMyAdmin 5.2 services with loopback ports and persistent MySQL storage."
+    },
     "requirements.txt": {
-        "summary": "Pinned Python dependencies: Django 6.1.3, asgiref 3.13.0, and sqlparse 0.6.1."
+        "summary": "Pinned Django dependencies, including PyMySQL with RSA authentication support and python-dotenv."
     }
 }
