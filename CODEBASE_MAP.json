@@ -1,21 +1,30 @@
 {
+    ".env.example": {
+        "summary": "Example environment variables for MySQL database/user credentials, root password, host-published MySQL port, and phpMyAdmin port."
+    },
+    "compose.yaml": {
+        "summary": "Defines MySQL 8.4 and phpMyAdmin 5.2 services, loopback-only published ports, persistent mysql_data volume, SQL-based MySQL health check, and health-gated phpMyAdmin startup."
+    },
     "core/__init__.py": {
-        "summary": "Registers PyMySQL as the MySQLdb driver for Django.",
+        "summary": "Registers PyMySQL compatibility aliases for Django's MySQLdb-based database backend during core package initialization.",
         "namespace": "core"
     },
     "core/asgi.py": {
-        "summary": "ASGI deployment entry point; selects core.settings and exports the Django ASGI application.",
+        "summary": "ASGI deployment entry point; defaults DJANGO_SETTINGS_MODULE to core.settings and exposes the Django ASGI application.",
         "namespace": "core.asgi",
-        "entry_points": [
-            "application"
+        "aliases": [
+            {
+                "name": "application",
+                "summary": "ASGI callable returned by get_asgi_application()."
+            }
         ]
     },
     "core/settings.py": {
-        "summary": "Django project configuration including the local MySQL connection, configured from environment variables with .env support.",
+        "summary": "Central Django configuration. Loads .env without overriding existing environment variables; configures local MySQL via django.db.backends.mysql and utf8mb4. Retains default contrib apps, middleware, templates, authentication validators, UTC timezone, and static settings. Development SECRET_KEY and DEBUG remain hardcoded.",
         "namespace": "core.settings"
     },
     "core/urls.py": {
-        "summary": "Root URL configuration; currently routes only /admin/ to the built-in Django admin.",
+        "summary": "Root URL configuration exposing only the built-in Django administration interface.",
         "namespace": "core.urls",
         "routes": [
             {
@@ -25,29 +34,26 @@
         ]
     },
     "core/wsgi.py": {
-        "summary": "WSGI deployment entry point; selects core.settings and exports the Django WSGI application.",
+        "summary": "WSGI deployment entry point; defaults DJANGO_SETTINGS_MODULE to core.settings and exposes the Django WSGI application.",
         "namespace": "core.wsgi",
-        "entry_points": [
-            "application"
+        "aliases": [
+            {
+                "name": "application",
+                "summary": "WSGI callable returned by get_wsgi_application()."
+            }
         ]
     },
     "manage.py": {
-        "summary": "Django command-line entry point for management commands, migrations, checks, and development server; defaults to core.settings.",
+        "summary": "Django CLI entry point for development server, migrations, system checks, and other management commands; defaults to core.settings.",
         "namespace": "manage",
         "functions": [
             {
                 "name": "main",
-                "summary": "Delegates command-line arguments to Django management command dispatcher."
+                "summary": "Initializes the settings-module default and dispatches sys.argv to Django's management command runner."
             }
         ]
     },
-    ".env.example": {
-        "summary": "Example MySQL credentials and local service ports."
-    },
-    "compose.yaml": {
-        "summary": "MySQL 8.4 and phpMyAdmin 5.2 services with loopback ports and persistent MySQL storage."
-    },
     "requirements.txt": {
-        "summary": "Pinned Django dependencies, including PyMySQL with RSA authentication support and python-dotenv."
+        "summary": "Pinned Python dependencies: Django 6.1.3, asgiref 3.13.0, sqlparse 0.6.1, PyMySQL[rsa] 1.2.4, and python-dotenv 1.2.4."
     }
 }
