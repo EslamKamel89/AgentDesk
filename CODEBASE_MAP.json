@@ -1,0 +1,47 @@
+{
+    "core/__init__.py": {
+        "summary": "Marks core as the Django project Python package.",
+        "namespace": "core"
+    },
+    "core/asgi.py": {
+        "summary": "ASGI deployment entry point; selects core.settings and exports the Django ASGI application.",
+        "namespace": "core.asgi",
+        "entry_points": [
+            "application"
+        ]
+    },
+    "core/settings.py": {
+        "summary": "Django project configuration: installed contrib apps, middleware, templates, SQLite database, authentication validators, timezone, and static files. Development-only DEBUG and hardcoded secret; generated header says Django 5.0.6 although requirements pin 6.1.3.",
+        "namespace": "core.settings"
+    },
+    "core/urls.py": {
+        "summary": "Root URL configuration; currently routes only /admin/ to the built-in Django admin.",
+        "namespace": "core.urls",
+        "routes": [
+            {
+                "path": "admin/",
+                "handler": "admin.site.urls"
+            }
+        ]
+    },
+    "core/wsgi.py": {
+        "summary": "WSGI deployment entry point; selects core.settings and exports the Django WSGI application.",
+        "namespace": "core.wsgi",
+        "entry_points": [
+            "application"
+        ]
+    },
+    "manage.py": {
+        "summary": "Django command-line entry point for management commands, migrations, checks, and development server; defaults to core.settings.",
+        "namespace": "manage",
+        "functions": [
+            {
+                "name": "main",
+                "summary": "Delegates command-line arguments to Django management command dispatcher."
+            }
+        ]
+    },
+    "requirements.txt": {
+        "summary": "Pinned Python dependencies: Django 6.1.3, asgiref 3.13.0, and sqlparse 0.6.1."
+    }
+}
