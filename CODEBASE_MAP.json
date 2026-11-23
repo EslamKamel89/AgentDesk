@@ -1,16 +1,16 @@
 {
     ".env.example": {
-        "summary": "Example environment variables for MySQL database/user credentials, root password, host-published MySQL port, and phpMyAdmin port."
+        "summary": "Example environment variables for MySQL credentials and local MySQL/phpMyAdmin ports."
     },
     "compose.yaml": {
-        "summary": "Defines MySQL 8.4 and phpMyAdmin 5.2 services, loopback-only published ports, persistent mysql_data volume, SQL-based MySQL health check, and health-gated phpMyAdmin startup."
+        "summary": "MySQL 8.4 and phpMyAdmin 5.2 services with loopback ports, persistent mysql_data volume, and MySQL health-gated startup."
     },
     "core/__init__.py": {
-        "summary": "Registers PyMySQL compatibility aliases for Django's MySQLdb-based database backend during core package initialization.",
+        "summary": "Registers PyMySQL compatibility aliases for Django's MySQLdb backend.",
         "namespace": "core"
     },
     "core/asgi.py": {
-        "summary": "ASGI deployment entry point; defaults DJANGO_SETTINGS_MODULE to core.settings and exposes the Django ASGI application.",
+        "summary": "ASGI entry point selecting core.settings and exposing the Django application.",
         "namespace": "core.asgi",
         "aliases": [
             {
@@ -20,11 +20,11 @@
         ]
     },
     "core/settings.py": {
-        "summary": "Central Django configuration. Loads .env without overriding existing environment variables; configures local MySQL via django.db.backends.mysql and utf8mb4. Retains default contrib apps, middleware, templates, authentication validators, UTC timezone, and static settings. Development SECRET_KEY and DEBUG remain hardcoded.",
+        "summary": "Central Django settings: environment-loaded MySQL connection, installed orders app, custom orders.User authentication model, middleware, templates, and static configuration. Development SECRET_KEY and DEBUG remain hardcoded.",
         "namespace": "core.settings"
     },
     "core/urls.py": {
-        "summary": "Root URL configuration exposing only the built-in Django administration interface.",
+        "summary": "Root URL configuration exposing only Django Admin.",
         "namespace": "core.urls",
         "routes": [
             {
@@ -34,7 +34,7 @@
         ]
     },
     "core/wsgi.py": {
-        "summary": "WSGI deployment entry point; defaults DJANGO_SETTINGS_MODULE to core.settings and exposes the Django WSGI application.",
+        "summary": "WSGI entry point selecting core.settings and exposing the Django application.",
         "namespace": "core.wsgi",
         "aliases": [
             {
@@ -44,16 +44,110 @@
         ]
     },
     "manage.py": {
-        "summary": "Django CLI entry point for development server, migrations, system checks, and other management commands; defaults to core.settings.",
+        "summary": "Django management command entry point using core.settings.",
         "namespace": "manage",
         "functions": [
             {
                 "name": "main",
-                "summary": "Initializes the settings-module default and dispatches sys.argv to Django's management command runner."
+                "summary": "Dispatches command-line arguments to Django's management command runner."
             }
         ]
     },
+    "orders/__init__.py": {
+        "summary": "Marks orders as a Python package.",
+        "namespace": "orders"
+    },
+    "orders/admin.py": {
+        "summary": "Django Admin registration module; no custom models registered yet.",
+        "namespace": "orders.admin"
+    },
+    "orders/apps.py": {
+        "summary": "Django application configuration for the orders app.",
+        "namespace": "orders.apps",
+        "classes": [
+            {
+                "name": "OrdersConfig",
+                "summary": "Registers the application under the orders package.",
+                "bases": [
+                    "AppConfig"
+                ]
+            }
+        ]
+    },
+    "orders/migrations/__init__.py": {
+        "summary": "Marks the orders migrations package.",
+        "namespace": "orders.migrations"
+    },
+    "orders/migrations/0001_initial.py": {
+        "summary": "Initial migration creating Product, custom User, and Order tables with authentication relationships, foreign keys, field constraints, and defaults. Depends on auth.0012.",
+        "namespace": "orders.migrations.0001_initial",
+        "classes": [
+            {
+                "name": "Migration",
+                "summary": "Initial schema migration creating Product, User, and Order in dependency order.",
+                "bases": [
+                    "migrations.Migration"
+                ]
+            }
+        ]
+    },
+    "orders/models.py": {
+        "summary": "Order domain models: custom authentication User, Product catalog, and customer Order with historical product fields, fulfillment status, tracking information, and timestamps.",
+        "namespace": "orders.models",
+        "classes": [
+            {
+                "name": "User",
+                "summary": "Swappable Django authentication model inheriting standard AbstractUser fields and behavior.",
+                "bases": [
+                    "AbstractUser"
+                ]
+            },
+            {
+                "name": "Product",
+                "summary": "Catalog product with name, description, decimal price, category, and stock availability flag.",
+                "bases": [
+                    "models.Model"
+                ],
+                "methods": [
+                    {
+                        "name": "__str__",
+                        "summary": "Returns the product name."
+                    }
+                ]
+            },
+            {
+                "name": "Order",
+                "summary": "Customer order linked to User and optionally Product; stores product name, amount, status, carrier, unique tracking number, delivery details, and timestamps. User deletion cascades; product deletion sets product_id to NULL.",
+                "bases": [
+                    "models.Model"
+                ],
+                "classes": [
+                    {
+                        "name": "Status",
+                        "summary": "Order status choices: PENDING, SHIPPED, DELIVERED, CANCELED.",
+                        "bases": [
+                            "models.TextChoices"
+                        ]
+                    }
+                ],
+                "methods": [
+                    {
+                        "name": "__str__",
+                        "summary": "Returns order ID, product name, and status."
+                    }
+                ]
+            }
+        ]
+    },
+    "orders/tests.py": {
+        "summary": "Placeholder Django test module; no tests implemented.",
+        "namespace": "orders.tests"
+    },
+    "orders/views.py": {
+        "summary": "Placeholder Django views module; no views implemented.",
+        "namespace": "orders.views"
+    },
     "requirements.txt": {
-        "summary": "Pinned Python dependencies: Django 6.1.3, asgiref 3.13.0, sqlparse 0.6.1, PyMySQL[rsa] 1.2.4, and python-dotenv 1.2.4."
+        "summary": "Pinned dependencies: Django 6.1.3, asgiref 3.13.0, sqlparse 0.6.1, PyMySQL[rsa] 1.2.4, and python-dotenv 1.2.4."
     }
 }
